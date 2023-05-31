@@ -79,7 +79,7 @@ export function postFetch() {
         return;
       }
 
-      alert('Кажется, у вас сломался интернет');
+      alert('Пропало интернеть соединение');
     });
 
   renderComments();
