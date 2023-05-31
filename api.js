@@ -9,7 +9,7 @@ export let comments = [];
 export const getComments = () => {
   document.getElementById('loader').style.display = 'block';
 
-  return fetch('https://webdev-hw-api.vercel.app/api/v1/viktor-pokazannikov/comments', {
+  return fetch('https://webdev-hw-api.vercel.app/api/v1/viktor_pokazannikov/comments', {
     method: 'GET',
   })
     .then((response) => {
@@ -35,7 +35,7 @@ export const getComments = () => {
 getComments();
 
 export function postFetch() {
-  fetch('https://webdev-hw-api.vercel.app/api/v1/viktor-pokazannikov/comments', {
+  fetch('https://webdev-hw-api.vercel.app/api/v1/viktor_pokazannikov/comments', {
     method: 'POST',
     body: JSON.stringify({
       name: nameInputElement.value
