@@ -9,7 +9,7 @@ export let comments = [];
 export const getComments = () => {
   document.getElementById('loader').style.display = 'block';
 
-  return fetch('https://webdev-hw-api.vercel.app/api/v1/alexei-rybak/comments', {
+  return fetch('https://webdev-hw-api.vercel.app/api/v1/viktor-pokazannikov/comments', {
     method: 'GET',
   })
     .then((response) => {
@@ -35,7 +35,7 @@ export const getComments = () => {
 getComments();
 
 export function postFetch() {
-  fetch('https://webdev-hw-api.vercel.app/api/v1/alexei-rybak/comments', {
+  fetch('https://webdev-hw-api.vercel.app/api/v1/viktor-pokazannikov/comments', {
     method: 'POST',
     body: JSON.stringify({
       name: nameInputElement.value
@@ -79,7 +79,7 @@ export function postFetch() {
         return;
       }
 
-      alert('Пропало интернеть соединение');
+      alert('Пропало интернет соединение');
     });
 
   renderComments();
