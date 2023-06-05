@@ -161,7 +161,14 @@ body {
   display: none;
 }
 
-
 .comment .edit-button {
   margin: 0 0 0 10px;
+}
+
+.load {
+  background: #202020;
+  color: #FFFFFF;
+  margin: auto auto;
+  padding-top: 50px;
+  padding-left: 100px;
 }
