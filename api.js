@@ -1,86 +1,78 @@
-import { renderComments } from "./render.js";
+const host = "https://webdev-hw-api.vercel.app/api/v2/viktor_pokazannikov/comments";
 
-export const nameInputElement = document.getElementById('name-input');
-export const textInputElement = document.getElementById('text-input');
-export const buttonElement = document.getElementById('button-add');
+//  Получаем список имеющихся комментариев 
 
-export let comments = [];
+export async function getComments({ token }) {
+  return fetch(host, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.status === 401) {
+      throw new Error("Нет авторизации");
+    }
+    if (response.status === 500) {
+      throw new Error("Сервер сломался, попробуй позже");
+    }
+    return response.json();
+  });
+}
 
-export const getComments = () => {
-  document.getElementById('loader').style.display = 'block';
+// Отправляем POST-запрос на сервер, чтобы добавить комментарий 
 
-  return fetch('https://webdev-hw-api.vercel.app/api/v1/viktor_pokazannikov/comments', {
-    method: 'GET',
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((responseData) => {
-      const appComments = responseData.comments.map((comment) => {
-        return {
-          name: comment.author.name,
-          date: new Date(comment.date),
-          text: comment.text,
-          likes: comment.likes,
-          isLiked: false,
-        };
-      });
-
-      comments = appComments;
-      renderComments();
-      document.getElementById('loader').style.display = 'none';
-    });
-};
-
-getComments();
-
-export function postFetch() {
-  fetch('https://webdev-hw-api.vercel.app/api/v1/viktor_pokazannikov/comments', {
-    method: 'POST',
+export async function postComments({ text, token }) {
+  return fetch(host, {
+    method: "POST",
     body: JSON.stringify({
-      name: nameInputElement.value
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;'),
-      text: textInputElement.value
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;'),
+      text,
     }),
-  })
-    .then((response) => {
-      buttonElement.textContent = 'Написать';
-      buttonElement.disabled = false;
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.status === 400) {
+        throw new Error("Комментарий должен быть не короче 3 символов");
+      }
       if (response.status === 500) {
-        return Promise.reject(500);
+        throw new Error("Сервер сломался, попробуй позже");
       }
-      if (response.status === 400) {
-        return Promise.reject(400);
-      }
-    })
-    .then(() => {
-      getComments();
-    })
-    .then(() => {
-      nameInputElement.value = '';
-      textInputElement.value = '';
-      buttonElement.classList.add('empty');
-    })
-    .catch((error) => {
-      if (error === 500) {
-        alert('Сервер сломался, попробуйте позже');
-        return;
-      }
-      if (error === 400) {
-        buttonElement.classList.add('empty');
-        alert('Имя и комментарий должны быть не короче 3 символов');
-        return;
-      }
+    return response.json();
+  });
+}
 
-      alert('Пропало интернет соединение');
+//  Отправляем POST-запрос на сервер, для авторизации пользователя 
+
+export async function loginUser({ login, password }) {
+  return fetch("https://wedev-api.sky.pro/api/user/login", {
+    method: "POST",
+    body: JSON.stringify({
+      login,
+      password,
+    }),
+  }).then((response) => {
+    if(response.status === 400){
+        throw new Error('Неверный логин или пароль');
+    }
+    return response.json();
+  });
+}
+
+// Отправляем POST-запрос на сервер, для регистрации нового пользователя 
+
+
+export async function regUser({ login, password, name }) {
+    return fetch("https://wedev-api.sky.pro/api/user", {
+      method: "POST",
+      body: JSON.stringify({
+        login,
+        password,
+        name
+      }),
+    }).then((response) => {
+      if(response.status === 400){
+          throw new Error('Такой пользователь уже существует');
+      }
+      return response.json();
     });
-
-  renderComments();
-};
+  }
