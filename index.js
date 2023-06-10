@@ -1,17 +1,18 @@
 // Кучкуем переменные 
 
+
 // let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 let token = null;
 let comments = [];
 let loadingComments = true;
 let isLoadingAdd = false;
 
-//  Импортируем функции и переменные 
+// Импортируем функции и переменные 
 
 import { postComments, getComments } from "./api.js";
 import { renderLogin, name } from "./components/login-component.js";
 
-//Рендерим имеющиеся комментарии 
+//  Рендерим имеющиеся комментарии 
 
 const getWrittenComments = async () => {
   renderApp(loadingComments);
@@ -36,7 +37,7 @@ const getWrittenComments = async () => {
     });
 };
 
-//  Рендеринг формы 
+//- Рендеринг формы 
 
 const renderForm = (isLoading) => {
   const formWindow = document.querySelector(".add-form");
@@ -189,7 +190,7 @@ const renderApp = (loadingComments) => {
       });
   });
 
-//Встраиваем слушателя событий на ввод текста 
+//  Встраиваем слушателя событий на ввод текста 
 
       buttonComments.disabled = true;
       buttonComments.classList.add('empty');
@@ -215,7 +216,7 @@ getWrittenComments();
 
 
 
-// Ответ на комментрарий 
+//  Ответ на комментрарий 
 
 const answerComments = (comments) => {
   const oldComments = document.querySelectorAll('.comment');
@@ -232,7 +233,6 @@ const answerComments = (comments) => {
 };
 
 //  Декларируем вспомогательную функцию задержки 
-
 function delay(interval = 300) {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -241,7 +241,7 @@ function delay(interval = 300) {
   });
 }
 
-// Форматируем дату 
+/ Форматируем дату 
 
 function formatDate(date) {
   const year = date.getFullYear().toString().slice(-2);
@@ -252,7 +252,7 @@ function formatDate(date) {
   return `${day}.${month}.${year} ${hours}:${minutes}`;
 }
 
-//  Cчетчик лайков 
+//  Это счетчик лайков 
 
 function counterLikes() {
   const likesButtonElements = document.querySelectorAll('.like-button');
