@@ -1,103 +1,119 @@
-'use strict';
+import { loginUser,regUser } from "../api.js";
+export let name;
 
-import { loginUser, regUser } from "./api.js";
+export function renderLogin({ appEl, setToken, getWrittenComments}) {
+  let isLoginMode = true;
 
-//  Обрабатываем форму авторизации пользователя 
+//  Рендерим форму авторизации 
 
-export function renderLogin({ appElement, setToken, fetchAndRender }) {
-  let isLoginMode = false;
-
-  //  Рендерим форму авторизации 
 
   const renderForm = () => {
-    const appHtml = ` 
-        <div class="login">
-        <div class="login-content">
-        <p class="login-title">${
-          isLoginMode ? "Авторизация" : "Регистрация"
-        }</p>
-        <span class="login-field">Логин</span><input id="login-input" class="login-input" type="text">
-        <br>
-        <span class="login-field">Пароль</span><input id="password-input" class="login-input" type="password" >
-        <br>
-        ${
-          isLoginMode
-            ? ""
-            : `<span class="login-field">Имя</span><input id="name-input" class="login-input" type="text" >`
-        }
-        <button id="login-button" class="login-button">${
-          isLoginMode ? "Войти" : "Зарегистрироваться"
+    const appHtml = `
+      <div class="login-form">
+      <h3>Форма ${isLoginMode ? "входа" : "регистрации"}</h3>
+      ${
+        isLoginMode
+          ? ""
+          : `
+            <input type="text" id="name-input" class="form-login" placeholder="Введите имя"/>`
+      }
+          
+          <input type="text" id="login-input" class="form-login" placeholder="Введите логин"/>
+          <input type="password" id="password-input" class="form-password" placeholder="Введите пароль"/>
+      
+        <button class="login-form-button" id="login-button">${
+          isLoginMode ? "Войти" : "Перейти к регистрации"
         }</button>
-        <button id="reg-button" class="registration-button">${
-          isLoginMode ? "Перейти к регистрации" : "Перейти ко входу"
+
+        <button class="login-button" id="toggle-button">${
+          isLoginMode ? "Перейти к регистрации" : "Войти"
         }</button>
-        </div>
-    </div>`;
+  `;
 
-    appElement.innerHTML = appHtml;
+    appEl.innerHTML = appHtml;
 
-//  Обрабатываем форму авторизации / регистрации 
+// Обрабатываем форму авторизации / регистрации 
+
 
     document.getElementById("login-button").addEventListener("click", () => {
-      const login = document.getElementById("login-input").value;
-      const password = document.getElementById("password-input").value;
       if (isLoginMode) {
-        if (!login) {
-          alert("Введите логин");
+        const login = document.getElementById("login-input");
+        const password = document.getElementById("password-input");
+        const loginCheck = document.getElementById("login-input").value;
+        const passwordCheck = document.getElementById("password-input").value;
+
+        login.classList.remove("error");
+
+        if (login.value == "") {
+          login.classList.add("error");
           return;
         }
-        if (!password) {
-          alert("Введите пароль");
+
+        password.classList.remove("error");
+
+        if (password.value == "") {
+          password.classList.add("error");
+          return;
         }
 
         loginUser({
-          login: login,
-          password: password,
+          login: login.value,
+          password: password.value,
         })
           .then((user) => {
             setToken(`Bearer ${user.user.token}`);
-            fetchAndRender();
+            name = user.user.name;
+            getWrittenComments();
           })
           .catch((error) => {
             alert(error.message);
           });
       } else {
-        const login = document.getElementById("login-input").value;
-        const password = document.getElementById("password-input").value;
-        const name = document.getElementById("name-input").value;
-        if (!name) {
-            alert("Введите имя");
-            return;
-          }
-          if (!login) {
-            alert("Введите логин");
-            return;
-          }
-  
-          if (!password) {
-            alert("Введите пароль");
-            return;
-          }
-  
-        regUser({
-            login: login,
-            password: password,
-            name: name,
-          })
-            .then((user) => {
-              setToken(`Bearer ${user.user.token}`);
-              fetchAndRender();
-            })
-            .catch((error) => {
-              alert(error.message);
-            });
-        }
-      });
+        const login = document.getElementById("login-input");
+        const name = document.getElementById("name-input");
+        const password = document.getElementById("password-input");
 
-    document.getElementById("reg-button").addEventListener("click", () => {
+        login.classList.remove("error");
+
+        if (login.value == "") {
+          login.classList.add("error");
+          return;
+        }
+
+        password.classList.remove("error");
+
+        if (password.value == "") {
+          password.classList.add("error");
+          return;
+        }
+
+        name.classList.remove("error");
+
+        if (name.value == "") {
+          name.classList.add("error");
+          return;
+        }
+
+        regUser({
+          login: login.value,
+          password: password.value,
+          name: name.value,
+        })
+          .then((user) => {
+            setToken(`Bearer ${user.user.token}`);
+            getWrittenComments();
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      }
+    });
+
+    document.getElementById("toggle-button").addEventListener("click", () => {
       isLoginMode = !isLoginMode;
       renderForm();
     });
   };
+
   renderForm();
 }
