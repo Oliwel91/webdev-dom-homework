@@ -241,7 +241,7 @@ function delay(interval = 300) {
   });
 }
 
-/ Форматируем дату 
+// Форматируем дату 
 
 function formatDate(date) {
   const year = date.getFullYear().toString().slice(-2);
