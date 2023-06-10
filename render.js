@@ -1,6 +1,6 @@
 import { comments } from "./api.js";
 
-import { counterLikes, formatDate, listComments, answerComment } from "./main.js";
+import { counterLikes, formatDate, listComments, answerComment } from "./index.js";
 
 export const renderComments = () => {
     const commentsHTML = comments
