@@ -1,5 +1,6 @@
 const host = "https://webdev-hw-api.vercel.app/api/v2/viktor_pokazannikov/comments";
 
+
 //  Получаем список имеющихся комментариев 
 
 export async function getComments({ token }) {
@@ -19,7 +20,7 @@ export async function getComments({ token }) {
   });
 }
 
-// Отправляем POST-запрос на сервер, чтобы добавить комментарий 
+//  Отправляем POST-запрос на сервер, чтобы добавить комментарий 
 
 export async function postComments({ text, token }) {
   return fetch(host, {
@@ -41,7 +42,7 @@ export async function postComments({ text, token }) {
   });
 }
 
-//  Отправляем POST-запрос на сервер, для авторизации пользователя 
+// Отправляем POST-запрос на сервер, чтобы авторизовать пользователя 
 
 export async function loginUser({ login, password }) {
   return fetch("https://wedev-api.sky.pro/api/user/login", {
@@ -58,7 +59,7 @@ export async function loginUser({ login, password }) {
   });
 }
 
-// Отправляем POST-запрос на сервер, для регистрации нового пользователя 
+//  Отправляем POST-запрос на сервер, чтобы зарегистрировать нового пользователя 
 
 
 export async function regUser({ login, password, name }) {
