@@ -1,5 +1,6 @@
-// Кучкуем переменные 
+// Кучкуем переменныe
 
+ import { format } from "date-fns";
 
 // let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 let token = null;
@@ -10,7 +11,7 @@ let isLoadingAdd = false;
 // Импортируем функции и переменные 
 
 import { postComments, getComments } from "./api.js";
-import { renderLogin, name } from "./components/login-component.js";
+import { renderLogin, name } from "./login-components.js";
 
 //  Рендерим имеющиеся комментарии 
 
